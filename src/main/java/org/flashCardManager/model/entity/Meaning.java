@@ -2,13 +2,14 @@ package org.flashCardManager.model.entity;
 
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.UUID;
 
 public class Meaning {
     private String id;
     private String cardId;
     private String definition;
-    //contexts
-    //examples
+    // contexts
+    // examples
     private LocalDate nextReviewDate;
     private int interval;
     private int repetitions;
@@ -16,31 +17,22 @@ public class Meaning {
     private PracticeMode practiceMode;
     private LocalDate creationDate;
 
-    public Meaning(){}
-
-    public Meaning(
-            String id,
-            String cardId,
-            String definition,
-            LocalDate nextReviewDate,
-            int interval,
-            int repetitions,
-            float easeFactor,
-            PracticeMode practiceMode,
-            LocalDate creationDate
-    ) {
-        setId(id);
-        setCardId(cardId);
-        setDefinition(definition);
-        setNextReviewDate(nextReviewDate);
-        setInterval(interval);
-        setRepetitions(repetitions);
-        setEaseFactor(easeFactor);
-        setPracticeMode(practiceMode);
-        setCreationDate(creationDate);
+    public Meaning() {
     }
 
-    //Getters
+    private Meaning(Builder builder) {
+        setId(UUID.randomUUID().toString().substring(0, 8));
+        setCardId(builder.cardId);
+        setDefinition(builder.definition);
+        setNextReviewDate(builder.nextReviewDate);
+        setInterval(builder.interval);
+        setRepetitions(builder.repetitions);
+        setEaseFactor(builder.easeFactor);
+        setPracticeMode(builder.practiceMode);
+        setCreationDate(LocalDate.now());
+    }
+
+    // Getters
     public String getId() {
         return id;
     }
@@ -77,8 +69,7 @@ public class Meaning {
         return creationDate;
     }
 
-
-    //Setters
+    // Setters
     private void setId(String id) {
         this.id = Objects.requireNonNull(id, "Id nao pode ser nulo");
     }
@@ -89,28 +80,28 @@ public class Meaning {
 
     private void setDefinition(String definition) {
         Objects.requireNonNull(definition, "Definition nao pode ser nulo");
-        if(definition.trim().length() < 10)
+        if (definition.trim().length() < 10)
             throw new IllegalArgumentException("Definicao deve ter pelo menos 10 caracteres");
         this.definition = definition;
     }
 
     private void setNextReviewDate(LocalDate nextReviewDate) {
         Objects.requireNonNull(nextReviewDate, "NextReviewDate nao pode ser nulo");
-        if(nextReviewDate.isBefore(LocalDate.now()))
+        if (nextReviewDate.isBefore(LocalDate.now()))
             throw new IllegalArgumentException("O nextReviewDate nao pode ser no passado");
         this.nextReviewDate = nextReviewDate;
     }
 
     private void setInterval(int interval) {
-        this.interval = Objects.requireNonNull(interval, "Interval nao pode ser nulo");
+        this.interval = interval;
     }
 
     private void setRepetitions(int repetitions) {
-        this.repetitions = Objects.requireNonNull(repetitions, "Repetitions nao pode ser nulo");
+        this.repetitions = repetitions;
     }
 
     private void setEaseFactor(float easeFactor) {
-        this.easeFactor = Objects.requireNonNull(easeFactor, "EaseFactor nao pode ser nulo");
+        this.easeFactor = easeFactor;
     }
 
     private void setPracticeMode(PracticeMode practiceMode) {
@@ -119,5 +110,55 @@ public class Meaning {
 
     private void setCreationDate(LocalDate creationDate) {
         this.creationDate = Objects.requireNonNull(creationDate, "Data de criacao é obrigatória");
+    }
+
+    // Builder
+    public static class Builder {
+        private String cardId;
+        private String definition;
+        private LocalDate nextReviewDate;
+        private int interval;
+        private int repetitions;
+        private float easeFactor;
+        private PracticeMode practiceMode;
+
+        public Builder cardId(String cardId) {
+            this.cardId = cardId;
+            return this;
+        }
+
+        public Builder definition(String definition) {
+            this.definition = definition;
+            return this;
+        }
+
+        public Builder nextReviewDate(LocalDate nextReviewDate) {
+            this.nextReviewDate = nextReviewDate;
+            return this;
+        }
+
+        public Builder interval(int interval) {
+            this.interval = interval;
+            return this;
+        }
+
+        public Builder repetitions(int repetitions) {
+            this.repetitions = repetitions;
+            return this;
+        }
+
+        public Builder easeFactor(float easeFactor) {
+            this.easeFactor = easeFactor;
+            return this;
+        }
+
+        public Builder practiceMode(PracticeMode practiceMode) {
+            this.practiceMode = practiceMode;
+            return this;
+        }
+
+        public Meaning build() {
+            return new Meaning(this);
+        }
     }
 }

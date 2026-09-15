@@ -1,6 +1,8 @@
 package org.flashCardManager.model.entity;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -9,9 +11,11 @@ public class Deck {
     private String name;
     private LocalDate creationDate;
 
+    List<Card> cards = new ArrayList<>();
+
     public Deck(){}
 
-    public Deck(String id, String name, LocalDate creationDate) {
+    public Deck(String name) {
         setId(UUID.randomUUID().toString().substring(0,8));
         setName(name);
         setCreationDate(LocalDate.now());
