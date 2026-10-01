@@ -1,11 +1,11 @@
 package org.flashCardManager;
 
 import org.flashCardManager.app.Application;
+import org.flashCardManager.context.ApplicationContext;
 
 public class Main {
     public static void main(String[] args) {
-        Application application = new Application();
-        application.runApplication();
-
+        ApplicationContext context = new ApplicationContext();
+        new Application(context).runApplication();
     }
 }
